@@ -10,56 +10,103 @@
 - 想生成 `生存大纲`、`概念压缩`、`真题逆向拆解`、`知识连接图`、`A4 小抄`。
 - 理工科综合题总是会单个知识点，但不会把知识点串起来。
 
-## 本地安装
+## GitHub 安装（推荐）
 
-把 skill 文件夹放到 Codex 的 skills 目录：
+推荐 GitHub 路径：
 
-```powershell
-$src = "C:\Users\ASUS\Documents\New project 2\exam-hacker"
-$dst = "C:\Users\ASUS\.codex\skills\exam-hacker"
-
-New-Item -ItemType Directory -Force -Path "$dst\agents" | Out-Null
-Copy-Item -LiteralPath "$src\SKILL.md" -Destination "$dst\SKILL.md" -Force
-Copy-Item -LiteralPath "$src\agents\openai.yaml" -Destination "$dst\agents\openai.yaml" -Force
+```text
+https://github.com/Wh1te358/skills-by-Wh1te/tree/codex/exam-hacker-skill/exam-hacker
 ```
 
-安装后重启 Codex。重启后可用：
+在 Windows PowerShell 里直接运行：
+
+```powershell
+$ErrorActionPreference = "Stop"
+
+$skillUrl = "https://github.com/Wh1te358/skills-by-Wh1te/tree/codex/exam-hacker-skill/exam-hacker"
+$installer = Join-Path $HOME ".codex/skills/.system/skill-installer/scripts/install-skill-from-github.py"
+
+if (-not (Test-Path $installer)) {
+  throw "没有找到 skill-installer。请确认 Codex 已安装，并且 $installer 存在。"
+}
+
+$python = $null
+foreach ($cmd in @("python", "python3", "py")) {
+  $found = Get-Command $cmd -ErrorAction SilentlyContinue
+  if ($found) {
+    $python = $cmd
+    break
+  }
+}
+
+if (-not $python) {
+  throw "没有找到 Python。请先安装 Python，或确认 python/python3/py 在 PATH 中。"
+}
+
+if ($python -eq "py") {
+  & py -3 $installer --url $skillUrl
+} else {
+  & $python $installer --url $skillUrl
+}
+
+Write-Host "Restart Codex, then invoke with: `$exam-hacker"
+```
+
+安装后重启 Codex。重启后调用：
 
 ```text
 $exam-hacker
 ```
 
-## GitHub 安装
+## macOS / Linux 安装
 
-如果仓库结构是：
+如果 macOS 用户使用 PowerShell 7（`pwsh`），也可以直接运行上面的 PowerShell 命令。
 
-```text
-skills-by-Wh1te/
-  exam-hacker/
-    SKILL.md
-    agents/
-      openai.yaml
+如果使用普通终端（zsh/bash），运行：
+
+```bash
+python3 "$HOME/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py" \
+  --url "https://github.com/Wh1te358/skills-by-Wh1te/tree/codex/exam-hacker-skill/exam-hacker"
 ```
 
-则安装命令应为：
+安装后重启 Codex。
+
+如果仓库还没有完成目录迁移，旧路径也可以安装：
 
 ```powershell
-python C:\Users\ASUS\.codex\skills\.system\skill-installer\scripts\install-skill-from-github.py --url "https://github.com/Wh1te358/skills-by-Wh1te/tree/main/exam-hacker"
+python "$HOME\.codex\skills\.system\skill-installer\scripts\install-skill-from-github.py" --url "https://github.com/Wh1te358/skills-by-Wh1te/tree/codex/exam-hacker-skill/skills/exam-hacker"
 ```
 
-如果当前 skill 还在旧路径：
+## 本地安装（已下载仓库时）
+
+如果已经把仓库 clone 到本地，并且当前目录就是仓库根目录，可以用下面的 PowerShell 命令安装。
+
+它会自动兼容两种目录：
 
 ```text
-skills-by-Wh1te/
-  skills/
-    exam-hacker/
-      SKILL.md
+exam-hacker/
+skills/exam-hacker/
 ```
 
-则安装命令是：
-
 ```powershell
-python C:\Users\ASUS\.codex\skills\.system\skill-installer\scripts\install-skill-from-github.py --url "https://github.com/Wh1te358/skills-by-Wh1te/tree/codex/exam-hacker-skill/skills/exam-hacker"
+$ErrorActionPreference = "Stop"
+
+$root = Get-Location
+$src = Join-Path $root "exam-hacker"
+if (-not (Test-Path (Join-Path $src "SKILL.md"))) {
+  $src = Join-Path $root "skills/exam-hacker"
+}
+if (-not (Test-Path (Join-Path $src "SKILL.md"))) {
+  throw "没有找到 exam-hacker/SKILL.md 或 skills/exam-hacker/SKILL.md。请先 cd 到仓库根目录。"
+}
+
+$dst = Join-Path $HOME ".codex/skills/exam-hacker"
+New-Item -ItemType Directory -Force -Path (Join-Path $dst "agents") | Out-Null
+Copy-Item -LiteralPath (Join-Path $src "SKILL.md") -Destination (Join-Path $dst "SKILL.md") -Force
+Copy-Item -LiteralPath (Join-Path $src "agents/openai.yaml") -Destination (Join-Path $dst "agents/openai.yaml") -Force
+
+Write-Host "Installed exam-hacker to $dst"
+Write-Host "Restart Codex, then invoke with: `$exam-hacker"
 ```
 
 ## 推荐资料结构
