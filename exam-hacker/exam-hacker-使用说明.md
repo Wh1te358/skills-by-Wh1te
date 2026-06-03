@@ -12,7 +12,7 @@
 
 ## GitHub 安装（推荐）
 
-推荐 GitHub 路径：
+推荐 GitHub 浏览路径：
 
 ```text
 https://github.com/Wh1te358/skills-by-Wh1te/tree/codex/exam-hacker-skill/exam-hacker
@@ -23,7 +23,6 @@ https://github.com/Wh1te358/skills-by-Wh1te/tree/codex/exam-hacker-skill/exam-ha
 ```powershell
 $ErrorActionPreference = "Stop"
 
-$skillUrl = "https://github.com/Wh1te358/skills-by-Wh1te/tree/codex/exam-hacker-skill/exam-hacker"
 $installer = Join-Path $HOME ".codex/skills/.system/skill-installer/scripts/install-skill-from-github.py"
 
 if (-not (Test-Path $installer)) {
@@ -44,13 +43,15 @@ if (-not $python) {
 }
 
 if ($python -eq "py") {
-  & py -3 $installer --url $skillUrl
+  & py -3 $installer --repo "Wh1te358/skills-by-Wh1te" --ref "codex/exam-hacker-skill" --path "exam-hacker"
 } else {
-  & $python $installer --url $skillUrl
+  & $python $installer --repo "Wh1te358/skills-by-Wh1te" --ref "codex/exam-hacker-skill" --path "exam-hacker"
 }
 
 Write-Host "Restart Codex, then invoke with: `$exam-hacker"
 ```
+
+不要把上面的 GitHub 浏览路径直接传给 `--url`。这个分支名 `codex/exam-hacker-skill` 里带 `/`，部分安装脚本会把 ref 错解析成 `codex`，导致下载失败并回退到 SSH clone。
 
 安装后重启 Codex。重启后调用：
 
@@ -66,15 +67,17 @@ $exam-hacker
 
 ```bash
 python3 "$HOME/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py" \
-  --url "https://github.com/Wh1te358/skills-by-Wh1te/tree/codex/exam-hacker-skill/exam-hacker"
+  --repo "Wh1te358/skills-by-Wh1te" \
+  --ref "codex/exam-hacker-skill" \
+  --path "exam-hacker"
 ```
 
 安装后重启 Codex。
 
-如果仓库还没有完成目录迁移，旧路径也可以安装：
+如果仓库还没有完成目录迁移，旧路径也不要用 `--url`，改用：
 
 ```powershell
-python "$HOME\.codex\skills\.system\skill-installer\scripts\install-skill-from-github.py" --url "https://github.com/Wh1te358/skills-by-Wh1te/tree/codex/exam-hacker-skill/skills/exam-hacker"
+python "$HOME\.codex\skills\.system\skill-installer\scripts\install-skill-from-github.py" --repo "Wh1te358/skills-by-Wh1te" --ref "codex/exam-hacker-skill" --path "skills/exam-hacker"
 ```
 
 ## 本地安装（已下载仓库时）
