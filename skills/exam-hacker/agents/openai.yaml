@@ -1,0 +1,7 @@
+interface:
+  display_name: "Exam Hacker"
+  short_description: "Final exam triage and knowledge maps"
+  default_prompt: "Use $exam-hacker to turn my course materials into a target-score exam survival plan."
+
+policy:
+  allow_implicit_invocation: true
