@@ -436,13 +436,13 @@ The Skill commonly generates these Markdown artifacts:
 
 ```text
 progress/
-  00_生存大纲.md
-  [章节]_概念压缩.md
-  [题型]_逆向拆解.md
-  04_知识节点表.md
-  05_知识连接图.md
-  06_综合题型地图.md
-  [章节]_A4小抄.md
+  00_survival-outline.md
+  [chapter]_concept-compression.md
+  [problem-type]_reverse-engineering.md
+  04_knowledge-node-table.md
+  05_knowledge-connection-map.md
+  06_integrated-problem-map.md
+  [chapter]_a4-compression.md
 ```
 
 ## Core Phases
@@ -488,9 +488,9 @@ load identification -> support reactions -> bending moment equation -> EI v'' = 
 
 The Skill must output:
 
-- `04_知识节点表.md`
-- `05_知识连接图.md`
-- `06_综合题型地图.md`
+- `04_knowledge-node-table.md`
+- `05_knowledge-connection-map.md`
+- `06_integrated-problem-map.md`
 
 If it only outputs an isolated knowledge list without connections, the round is considered failed.
 
