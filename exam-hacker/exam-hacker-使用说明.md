@@ -26,6 +26,8 @@ py -3 "$HOME\.codex\skills\.system\skill-installer\scripts\install-skill-from-gi
 
 如果你的电脑没有 `py`，把命令开头的 `py -3` 换成 `python`。
 
+你也可以直接告诉你的 Agent：帮我安装这个 Skill，GitHub 连接为 `https://github.com/Wh1te358/skills-by-Wh1te/tree/codex/exam-hacker-skill/exam-hacker`。
+
 不要把上面的 GitHub 浏览路径直接传给 `--url`。这个分支名 `codex/exam-hacker-skill` 里带 `/`，部分安装脚本会把 ref 错解析成 `codex`，导致下载失败并回退到 SSH clone。
 
 安装后重启 Codex。重启后调用：
@@ -265,6 +267,8 @@ py -3 "$HOME\.codex\skills\.system\skill-installer\scripts\install-skill-from-gi
 ```
 
 If `py` is not available on your machine, replace `py -3` with `python`.
+
+You can also tell your Agent directly: install this Skill for me. The GitHub link is `https://github.com/Wh1te358/skills-by-Wh1te/tree/codex/exam-hacker-skill/exam-hacker`.
 
 Do not pass the GitHub browsing URL directly to `--url`. The branch name `codex/exam-hacker-skill` contains `/`, and some installer scripts may incorrectly parse the ref as `codex`, which causes download failure and fallback to SSH clone.
 
