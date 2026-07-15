@@ -21,14 +21,14 @@ https://github.com/Wh1te358/skills-by-Wh1te/tree/codex/exam-hacker-skill/exam-ha
 在 Windows PowerShell 里直接运行：
 
 ```powershell
-py -3 "$HOME\.codex\skills\.system\skill-installer\scripts\install-skill-from-github.py" --repo "Wh1te358/skills-by-Wh1te" --ref "codex/exam-hacker-skill" --path "exam-hacker"
+npx -y skills add Wh1te358/skills-by-Wh1te -g --all
 ```
 
-如果你的电脑没有 `py`，把命令开头的 `py -3` 换成 `python`。
+这条命令 Windows / macOS / Linux 都能用。前提是电脑已经安装 Node.js，并且能使用 `npx`。
 
 你也可以直接告诉你的 Agent：帮我安装这个 Skill，GitHub 链接为 `https://github.com/Wh1te358/skills-by-Wh1te/tree/codex/exam-hacker-skill/exam-hacker`。
 
-不要把上面的 GitHub 浏览路径直接传给 `--url`。这个分支名 `codex/exam-hacker-skill` 里带 `/`，部分安装脚本会把 ref 错解析成 `codex`，导致下载失败并回退到 SSH clone。
+不要把上面的 GitHub 浏览路径直接传给旧版 Python installer 的 `--url`。这个分支名 `codex/exam-hacker-skill` 里带 `/`，部分安装脚本会把 ref 错解析成 `codex`，导致下载失败并回退到 SSH clone。用上面的 `npx` 命令即可。
 
 安装后重启 Codex。重启后调用：
 
@@ -38,23 +38,18 @@ $exam-hacker
 
 ## macOS / Linux 安装
 
-如果 macOS 用户使用 PowerShell 7（`pwsh`），也可以直接运行上面的 PowerShell 命令。
-
-如果使用普通终端（zsh/bash），运行：
+macOS / Linux 终端同样运行：
 
 ```bash
-python3 "$HOME/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py" \
-  --repo "Wh1te358/skills-by-Wh1te" \
-  --ref "codex/exam-hacker-skill" \
-  --path "exam-hacker"
+npx -y skills add Wh1te358/skills-by-Wh1te -g --all
 ```
 
 安装后重启 Codex。
 
-如果仓库还没有完成目录迁移，旧路径也不要用 `--url`，改用：
+如果你的环境没有 `npx`，先安装 Node.js。旧版 Python installer 作为备用时，不要用 `--url`，改用：
 
 ```powershell
-python "$HOME\.codex\skills\.system\skill-installer\scripts\install-skill-from-github.py" --repo "Wh1te358/skills-by-Wh1te" --ref "codex/exam-hacker-skill" --path "skills/exam-hacker"
+python "$HOME\.codex\skills\.system\skill-installer\scripts\install-skill-from-github.py" --repo "Wh1te358/skills-by-Wh1te" --ref "codex/exam-hacker-skill" --path "exam-hacker"
 ```
 
 ## 本地安装（已下载仓库时）
@@ -263,14 +258,14 @@ https://github.com/Wh1te358/skills-by-Wh1te/tree/codex/exam-hacker-skill/exam-ha
 Run this directly in Windows PowerShell:
 
 ```powershell
-py -3 "$HOME\.codex\skills\.system\skill-installer\scripts\install-skill-from-github.py" --repo "Wh1te358/skills-by-Wh1te" --ref "codex/exam-hacker-skill" --path "exam-hacker"
+npx -y skills add Wh1te358/skills-by-Wh1te -g --all
 ```
 
-If `py` is not available on your machine, replace `py -3` with `python`.
+This command works on Windows, macOS, and Linux, as long as Node.js and `npx` are available.
 
 You can also tell your Agent directly: install this Skill for me. The GitHub link is `https://github.com/Wh1te358/skills-by-Wh1te/tree/codex/exam-hacker-skill/exam-hacker`.
 
-Do not pass the GitHub browsing URL directly to `--url`. The branch name `codex/exam-hacker-skill` contains `/`, and some installer scripts may incorrectly parse the ref as `codex`, which causes download failure and fallback to SSH clone.
+Do not pass the GitHub browsing URL directly to the old Python installer's `--url`. The branch name `codex/exam-hacker-skill` contains `/`, and some installer scripts may incorrectly parse the ref as `codex`, which causes download failure and fallback to SSH clone. Use the `npx` command above.
 
 Restart Codex after installation. Then invoke:
 
@@ -280,23 +275,18 @@ $exam-hacker
 
 ## macOS / Linux Installation
 
-If macOS users run PowerShell 7 (`pwsh`), they can use the same PowerShell command above.
-
-If using a normal terminal such as zsh or bash, run:
+Use the same command in a normal macOS / Linux terminal:
 
 ```bash
-python3 "$HOME/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py" \
-  --repo "Wh1te358/skills-by-Wh1te" \
-  --ref "codex/exam-hacker-skill" \
-  --path "exam-hacker"
+npx -y skills add Wh1te358/skills-by-Wh1te -g --all
 ```
 
 Restart Codex after installation.
 
-If the repository has not completed the directory migration yet, do not use `--url`; use:
+If `npx` is unavailable, install Node.js first. If you use the old Python installer as a fallback, do not use `--url`; use:
 
 ```powershell
-python "$HOME\.codex\skills\.system\skill-installer\scripts\install-skill-from-github.py" --repo "Wh1te358/skills-by-Wh1te" --ref "codex/exam-hacker-skill" --path "skills/exam-hacker"
+python "$HOME\.codex\skills\.system\skill-installer\scripts\install-skill-from-github.py" --repo "Wh1te358/skills-by-Wh1te" --ref "codex/exam-hacker-skill" --path "exam-hacker"
 ```
 
 ## Local Installation (If The Repo Is Already Downloaded)
