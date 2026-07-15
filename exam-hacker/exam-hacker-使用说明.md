@@ -21,35 +21,10 @@ https://github.com/Wh1te358/skills-by-Wh1te/tree/codex/exam-hacker-skill/exam-ha
 在 Windows PowerShell 里直接运行：
 
 ```powershell
-$ErrorActionPreference = "Stop"
-
-$installer = Join-Path $HOME ".codex/skills/.system/skill-installer/scripts/install-skill-from-github.py"
-
-if (-not (Test-Path $installer)) {
-  throw "没有找到 skill-installer。请确认 Codex 已安装，并且 $installer 存在。"
-}
-
-$python = $null
-foreach ($cmd in @("python", "python3", "py")) {
-  $found = Get-Command $cmd -ErrorAction SilentlyContinue
-  if ($found) {
-    $python = $cmd
-    break
-  }
-}
-
-if (-not $python) {
-  throw "没有找到 Python。请先安装 Python，或确认 python/python3/py 在 PATH 中。"
-}
-
-if ($python -eq "py") {
-  & py -3 $installer --repo "Wh1te358/skills-by-Wh1te" --ref "codex/exam-hacker-skill" --path "exam-hacker"
-} else {
-  & $python $installer --repo "Wh1te358/skills-by-Wh1te" --ref "codex/exam-hacker-skill" --path "exam-hacker"
-}
-
-Write-Host "Restart Codex, then invoke with: `$exam-hacker"
+py -3 "$HOME\.codex\skills\.system\skill-installer\scripts\install-skill-from-github.py" --repo "Wh1te358/skills-by-Wh1te" --ref "codex/exam-hacker-skill" --path "exam-hacker"
 ```
+
+如果你的电脑没有 `py`，把命令开头的 `py -3` 换成 `python`。
 
 不要把上面的 GitHub 浏览路径直接传给 `--url`。这个分支名 `codex/exam-hacker-skill` 里带 `/`，部分安装脚本会把 ref 错解析成 `codex`，导致下载失败并回退到 SSH clone。
 
@@ -286,35 +261,10 @@ https://github.com/Wh1te358/skills-by-Wh1te/tree/codex/exam-hacker-skill/exam-ha
 Run this directly in Windows PowerShell:
 
 ```powershell
-$ErrorActionPreference = "Stop"
-
-$installer = Join-Path $HOME ".codex/skills/.system/skill-installer/scripts/install-skill-from-github.py"
-
-if (-not (Test-Path $installer)) {
-  throw "skill-installer not found. Make sure Codex is installed and $installer exists."
-}
-
-$python = $null
-foreach ($cmd in @("python", "python3", "py")) {
-  $found = Get-Command $cmd -ErrorAction SilentlyContinue
-  if ($found) {
-    $python = $cmd
-    break
-  }
-}
-
-if (-not $python) {
-  throw "Python was not found. Install Python, or make sure python/python3/py is available in PATH."
-}
-
-if ($python -eq "py") {
-  & py -3 $installer --repo "Wh1te358/skills-by-Wh1te" --ref "codex/exam-hacker-skill" --path "exam-hacker"
-} else {
-  & $python $installer --repo "Wh1te358/skills-by-Wh1te" --ref "codex/exam-hacker-skill" --path "exam-hacker"
-}
-
-Write-Host "Restart Codex, then invoke with: `$exam-hacker"
+py -3 "$HOME\.codex\skills\.system\skill-installer\scripts\install-skill-from-github.py" --repo "Wh1te358/skills-by-Wh1te" --ref "codex/exam-hacker-skill" --path "exam-hacker"
 ```
+
+If `py` is not available on your machine, replace `py -3` with `python`.
 
 Do not pass the GitHub browsing URL directly to `--url`. The branch name `codex/exam-hacker-skill` contains `/`, and some installer scripts may incorrectly parse the ref as `codex`, which causes download failure and fallback to SSH clone.
 
