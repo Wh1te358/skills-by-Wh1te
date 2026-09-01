@@ -1,0 +1,80 @@
+{
+  "run_id": "exam-hacker-compress-solve-integration-2026-09-01",
+  "run_at": "2026-09-01T07:18:57+08:00",
+  "execution_type": "deterministic artifact-contract smoke plus six-skill regression",
+  "blind_model_eval": false,
+  "highest_validation_level": 1,
+  "candidate_hashes": {
+    "exam-hacker/SKILL.md": "3f64c3391e6cc33c4c498693d79cd4f2c15e7694f578502336b3741a105e4658",
+    "exam-hacker-triage/SKILL.md": "19ecbf0281988fd2dae2f2b9dc9c0afca4d6ae337ba790b93550333643d9a71b",
+    "exam-hacker-triage/scripts/validate_strategy.py": "913da5dc06a6c39408e5cf75df09445b28ac2ed5e31e9352d628630cb6c8e6a9",
+    "exam-hacker-compress/SKILL.md": "dab917921accd66181bd8b05b32ddb915258494cf13060a46d1432d15c6d184d",
+    "exam-hacker-compress/scripts/validate_compression.py": "f4431cd028727e641dfcbe75e7e0a16fd919e841a18675343b481b54c8ab65a9",
+    "exam-hacker-solve/SKILL.md": "1a8af3d54f622d2478e009886c64b7cad4ad171c0d6c319a6a604938d323098c",
+    "exam-hacker-solve/scripts/validate_solution.py": "62ffff7f65fccb37f2ddbdc8c5a59866facbe4bf0a9a731156910033f60414b5",
+    "exam-hacker-drill/SKILL.md": "8878a025da15d5818e97469932dc004768e7359aa2758555c91eb105c1125f8a",
+    "exam-hacker-drill/scripts/append_mastery_event.py": "f5d57f6a96a5b0d78b5cb4ccd3c7431a280b8b2769125ff0e612d57fc1853b8f",
+    "exam-hacker-replan/SKILL.md": "55f0e5fcc003c67498cb69f1932cc4553b107f8b3f47eefb023efdf93fe1325b",
+    "exam-hacker-replan/scripts/validate_replan.py": "9904cb3a880b6b845bb32eccdb7a84954d66116a6e382063b556103e85d439c7"
+  },
+  "positive_checks": [
+    {
+      "name": "default chain compression",
+      "observed": "VALID COMPRESSION: artifact=compression-force-method-chain mode=chain steps=5 endpoint=final-internal-forces",
+      "passed": true
+    },
+    {
+      "name": "explicit failed-node compression",
+      "observed": "VALID COMPRESSION: artifact=compression-compatibility-equation mode=node steps=1 endpoint=compatibility-equation",
+      "passed": true
+    },
+    {
+      "name": "reference-verified full solution",
+      "observed": "VALID SOLUTION: artifact=solution-beam-reactions-reference status=reference_verified steps=3 endpoint=support-reactions-result",
+      "passed": true
+    },
+    {
+      "name": "Agent-derived full solution",
+      "observed": "VALID SOLUTION: artifact=solution-beam-reactions-derived status=agent_derived steps=3 endpoint=support-reactions-result",
+      "passed": true
+    },
+    {
+      "name": "existing triage-drill-replan loop regression",
+      "observed": "revision 1 validated; event appended; revision 1 to 2 transition validated",
+      "passed": true
+    }
+  ],
+  "negative_checks": [
+    {
+      "name": "node mode without explicit user report",
+      "observed": "INVALID: node mode requires an explicit user-reported node problem; exit 1",
+      "passed": true
+    },
+    {
+      "name": "non-reproducible topology",
+      "observed": "INVALID: step uses a node not yet available; exit 1",
+      "passed": true
+    },
+    {
+      "name": "visible solution mislabeled as mastery",
+      "observed": "INVALID: visible solution must be practice_only; exit 1",
+      "passed": true
+    },
+    {
+      "name": "Agent-derived answer with one check",
+      "observed": "INVALID: agent_derived solution needs two different independent check types; exit 1",
+      "passed": true
+    },
+    {
+      "name": "reference-verified answer without answer source",
+      "observed": "INVALID: reference_verified solution needs an answer source; exit 1",
+      "passed": true
+    }
+  ],
+  "known_limits": [
+    "No independent blind model behavior run was executed.",
+    "The deterministic validators prove structure, binding, topology, and declared checks, not the semantic truth of every mathematical claim.",
+    "No installed copy was synchronized.",
+    "No commit or remote publication was performed."
+  ]
+}

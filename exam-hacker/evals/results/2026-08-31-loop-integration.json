@@ -1,0 +1,94 @@
+{
+  "run_id": "exam-hacker-loop-integration-2026-08-31",
+  "run_at": "2026-08-31T11:15:00+08:00",
+  "execution_type": "deterministic integration smoke plus static behavior contracts",
+  "blind_model_eval": false,
+  "highest_validation_level": 1,
+  "fixture": "../fixtures/loop-course",
+  "candidate_hashes": {
+    "exam-hacker/SKILL.md": "f9549a3de5d3d15e7dc022398785b00d3f817b5defd940edb8ac9337b560d7d9",
+    "exam-hacker-triage/SKILL.md": "19ecbf0281988fd2dae2f2b9dc9c0afca4d6ae337ba790b93550333643d9a71b",
+    "exam-hacker-triage/scripts/validate_strategy.py": "9b49897a40bd24ac9e62b89fd555bb941cada6436d7ca048303a25dfc53be956",
+    "exam-hacker-drill/SKILL.md": "529c974cd3e488c077678376014c6bbed6e72ade6a8065090bdff787b3dd9d92",
+    "exam-hacker-drill/scripts/append_mastery_event.py": "f5d57f6a96a5b0d78b5cb4ccd3c7431a280b8b2769125ff0e612d57fc1853b8f",
+    "exam-hacker-replan/SKILL.md": "55f0e5fcc003c67498cb69f1932cc4553b107f8b3f47eefb023efdf93fe1325b",
+    "exam-hacker-replan/scripts/validate_replan.py": "9904cb3a880b6b845bb32eccdb7a84954d66116a6e382063b556103e85d439c7"
+  },
+  "structural_validation": [
+    {
+      "skill": "exam-hacker",
+      "passed": true,
+      "warnings": 0
+    },
+    {
+      "skill": "exam-hacker-triage",
+      "passed": true,
+      "warnings": 0
+    },
+    {
+      "skill": "exam-hacker-drill",
+      "passed": true,
+      "warnings": 0
+    },
+    {
+      "skill": "exam-hacker-replan",
+      "passed": true,
+      "warnings": 0
+    }
+  ],
+  "integration_checks": [
+    {
+      "name": "initial strategy validates",
+      "expected": "accept revision 1 with three executable Sessions",
+      "observed": "VALID: course=structural-mechanics-final revision=1 sessions=3 materials=1",
+      "passed": true
+    },
+    {
+      "name": "drill event dry-run and append",
+      "expected": "validate first, then append one event",
+      "observed": "dry-run VALID; append APPENDED event-force-method-001",
+      "passed": true
+    },
+    {
+      "name": "duplicate event rejection",
+      "expected": "reject a second append of the same event_id",
+      "observed": "INVALID: duplicate event_id 'event-force-method-001'; exit 1",
+      "passed": true
+    },
+    {
+      "name": "revision 2 validates",
+      "expected": "accept four retained Sessions, revised mastery, and one repair Session",
+      "observed": "VALID: course=structural-mechanics-final revision=2 sessions=4 materials=1",
+      "passed": true
+    },
+    {
+      "name": "evidence-driven replan",
+      "expected": "consume the new event and advance revision and cursor",
+      "observed": "VALID REPLAN: course=structural-mechanics-final revision=1->2 cursor=event-force-method-001",
+      "passed": true
+    },
+    {
+      "name": "no-op revision rejection",
+      "expected": "reject a new revision with neither evidence nor capacity change",
+      "observed": "INVALID: revision has neither consumed evidence nor an availability change; exit 1",
+      "passed": true
+    },
+    {
+      "name": "source mutation rejection",
+      "expected": "prevent drill evidence from rewriting source facts",
+      "observed": "INVALID: source_materials changed during replan; exit 1",
+      "passed": true
+    },
+    {
+      "name": "evidence cursor skip rejection",
+      "expected": "reject consuming a later event while leaving an earlier event behind the new cursor",
+      "observed": "INVALID: consumed evidence must be the ordered prefix after the cursor; exit 1",
+      "passed": true
+    }
+  ],
+  "known_limits": [
+    "No blind model behavior run was executed.",
+    "No installed copy was synchronized.",
+    "No commit or remote publication was performed."
+  ]
+}

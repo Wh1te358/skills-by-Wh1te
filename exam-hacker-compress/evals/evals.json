@@ -1,0 +1,81 @@
+{
+  "skill": "exam-hacker-compress",
+  "behavior_contract": {
+    "must": [
+      "Default to a connected knowledge chain for an eligible algorithmic STEM task.",
+      "Use node mode only after the user explicitly identifies a failed node.",
+      "Produce a source-grounded ordered chain that reaches a verifiable endpoint.",
+      "Render and visually inspect relevant pages when a required PDF is scan-like.",
+      "Label compression losses and provide answer-hidden retrieval probes."
+    ],
+    "must_not": [
+      "Turn an entire chapter or course into a condensed textbook.",
+      "Edit strategy.json or append mastery evidence.",
+      "Claim the user mastered an artifact by receiving it.",
+      "Apply the contract to open-ended or memorization-heavy work."
+      ,"Treat OCR output as verified formula or diagram evidence."
+    ]
+  },
+  "cases": [
+    {
+      "id": "chain-01",
+      "type": "normal",
+      "prompt": "Compress the force-method route from choosing the basic system through recovering the final internal forces. I need a chain I can execute, not a chapter summary.",
+      "input_files": ["progress/strategy.json", "reference/review-sheet.md"],
+      "expected_behavior": [
+        "Uses chain mode with multiple connected target nodes.",
+        "Ends at a stated result with a concrete verification method."
+      ]
+    },
+    {
+      "id": "node-01",
+      "type": "normal",
+      "prompt": "我明确卡在兼容方程这个节点：前面都能做，只是不知道这个方程怎样写。只压缩这个节点。",
+      "input_files": ["progress/strategy.json", "reference/review-sheet.md"],
+      "expected_behavior": [
+        "Uses node mode and records that the node problem was explicit.",
+        "Keeps only the local inputs, operation, output, and failure boundary needed for repair."
+      ]
+    },
+    {
+      "id": "weak-node-inference-01",
+      "type": "boundary",
+      "prompt": "My mastery snapshot says force method is level 0. Compress what I need.",
+      "input_files": ["progress/strategy.json"],
+      "expected_behavior": [
+        "Defaults to the relevant knowledge chain rather than inferring node mode from a low mastery score.",
+        "Does not diagnose an exact failed node without user evidence."
+      ]
+    },
+    {
+      "id": "missing-link-01",
+      "type": "boundary",
+      "prompt": "Build a complete derivation chain, but my material only contains the final formula with no assumptions or derivation.",
+      "input_files": ["reference/formula-only.md"],
+      "expected_behavior": [
+        "Records the missing transition instead of inventing a derivation.",
+        "Does not produce a validated chain that claims unsupported steps."
+      ]
+    },
+    {
+      "id": "scanned-source-01",
+      "type": "boundary",
+      "prompt": "The only derivation is on page 18 of an image-only lecture PDF. Compress that chain.",
+      "input_files": ["reference/scanned-lecture.pdf"],
+      "expected_behavior": [
+        "Renders and visually inspects page 18 before using the derivation.",
+        "Does not use OCR alone as the source-backed transition."
+      ]
+    },
+    {
+      "id": "essay-01",
+      "type": "near_neighbor",
+      "prompt": "Compress my open-ended engineering ethics essay into this algorithmic chain format.",
+      "input_files": [],
+      "expected_behavior": [
+        "States that the task lacks the required algorithmic and verifiable endpoint.",
+        "Does not force the essay into a fake solution chain."
+      ]
+    }
+  ]
+}
