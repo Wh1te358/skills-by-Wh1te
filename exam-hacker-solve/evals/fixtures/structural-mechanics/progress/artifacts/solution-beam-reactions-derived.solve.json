@@ -1,0 +1,88 @@
+{
+  "contract_version": "exam-hacker-solve/v1",
+  "artifact_type": "solved-problem-chain",
+  "artifact_id": "solution-beam-reactions-derived",
+  "course_id": "structural-mechanics-final",
+  "strategy_revision_observed": 1,
+  "session_id": "session-beam-reactions-01",
+  "output_id": "solution-beam-reactions-derived",
+  "display_path": "progress/artifacts/solution-beam-reactions-derived.md",
+  "answer_policy": "full_solution",
+  "practice_status": "practice_only",
+  "solution_status": "agent_derived",
+  "residual_uncertainty": null,
+  "problem": {
+    "id": "problem-beam-reactions-01",
+    "statement": "A simply supported 6 m beam carries a 12 kN downward point load 2 m from A; find reactions at A and B.",
+    "target_node_ids": ["beam-equilibrium", "support-reactions"],
+    "source_refs": [
+      {"material_id": "problem-sheet", "role": "problem", "locator": "Beam Reaction Problem", "claim": "The source provides span, load, location, supports, and sign convention."},
+      {"material_id": "equilibrium-note", "role": "theory", "locator": "Plane Equilibrium", "claim": "Static equilibrium supplies force and moment equations."}
+    ]
+  },
+  "nodes": [
+    {"id": "span-l", "label": "Span L", "role": "given", "mathematical_meaning": "L = 6 m", "source_refs": [{"material_id": "problem-sheet", "role": "problem", "locator": "sentence 1", "claim": "Beam span is 6 m."}]},
+    {"id": "load-p", "label": "Point load P", "role": "given", "mathematical_meaning": "P = 12 kN downward", "source_refs": [{"material_id": "problem-sheet", "role": "problem", "locator": "sentence 2", "claim": "Point load is 12 kN downward."}]},
+    {"id": "distance-a", "label": "Load distance a", "role": "given", "mathematical_meaning": "a = 2 m from A", "source_refs": [{"material_id": "problem-sheet", "role": "problem", "locator": "sentence 2", "claim": "Load acts 2 m from A."}]},
+    {"id": "moment-equilibrium", "label": "Moment equilibrium about A", "role": "formula", "mathematical_meaning": "sum M_A = 0", "source_refs": [{"material_id": "equilibrium-note", "role": "theory", "locator": "Plane Equilibrium", "claim": "Moment sum about any point is zero."}]},
+    {"id": "vertical-equilibrium", "label": "Vertical equilibrium", "role": "formula", "mathematical_meaning": "sum F_y = 0", "source_refs": [{"material_id": "equilibrium-note", "role": "theory", "locator": "Plane Equilibrium", "claim": "Vertical force sum is zero."}]},
+    {"id": "reaction-b", "label": "Reaction at B", "role": "result", "mathematical_meaning": "R_B = 4 kN upward", "source_refs": [{"material_id": "equilibrium-note", "role": "theory", "locator": "Plane Equilibrium", "claim": "Moment equilibrium determines R_B."}]},
+    {"id": "reaction-a", "label": "Reaction at A", "role": "result", "mathematical_meaning": "R_A = 8 kN upward", "source_refs": [{"material_id": "equilibrium-note", "role": "theory", "locator": "Plane Equilibrium", "claim": "Vertical equilibrium determines R_A."}]},
+    {"id": "support-reactions-result", "label": "Support reaction pair", "role": "result", "mathematical_meaning": "(R_A, R_B) = (8, 4) kN upward", "source_refs": [{"material_id": "equilibrium-note", "role": "theory", "locator": "Plane Equilibrium", "claim": "The reaction pair follows from the two equilibrium equations."}]}
+  ],
+  "initial_node_ids": ["span-l", "load-p", "distance-a", "moment-equilibrium", "vertical-equilibrium"],
+  "steps": [
+    {
+      "id": "step-moment-about-a",
+      "input_node_ids": ["span-l", "load-p", "distance-a", "moment-equilibrium"],
+      "output_node_ids": ["reaction-b"],
+      "trigger": "Two vertical reactions are unknown, so take moments about A to eliminate R_A.",
+      "operation": "Set the net moment about A to zero and solve for R_B.",
+      "equation_or_rule": "R_B(6) - 12(2) = 0, so R_B = 4 kN.",
+      "why": "The reaction at A has zero lever arm about A.",
+      "check": "The positive result means R_B acts upward.",
+      "source_refs": [{"material_id": "equilibrium-note", "role": "theory", "locator": "Plane Equilibrium", "claim": "Moment equilibrium determines R_B."}]
+    },
+    {
+      "id": "step-vertical-force-balance",
+      "input_node_ids": ["load-p", "reaction-b", "vertical-equilibrium"],
+      "output_node_ids": ["reaction-a"],
+      "trigger": "R_B is known and one vertical reaction remains.",
+      "operation": "Set the vertical force sum to zero and solve for R_A.",
+      "equation_or_rule": "R_A + 4 - 12 = 0, so R_A = 8 kN.",
+      "why": "Static vertical acceleration is zero.",
+      "check": "R_A + R_B equals the applied load.",
+      "source_refs": [{"material_id": "equilibrium-note", "role": "theory", "locator": "Plane Equilibrium", "claim": "Vertical force equilibrium determines R_A."}]
+    },
+    {
+      "id": "step-report-reaction-pair",
+      "input_node_ids": ["reaction-a", "reaction-b"],
+      "output_node_ids": ["support-reactions-result"],
+      "trigger": "Both reactions are known.",
+      "operation": "Report magnitudes, directions, and units together.",
+      "equation_or_rule": "(R_A, R_B) = (8, 4) kN upward.",
+      "why": "The problem asks for the complete reaction pair.",
+      "check": "Both results carry force units and directions.",
+      "source_refs": [{"material_id": "problem-sheet", "role": "problem", "locator": "final sentence", "claim": "Both reactions are requested."}]
+    }
+  ],
+  "endpoint": {
+    "node_id": "support-reactions-result",
+    "statement": "Determine both vertical support reactions with magnitude, direction, and units.",
+    "final_answer": "R_A = 8 kN upward; R_B = 4 kN upward.",
+    "units": "kN",
+    "acceptance_condition": "Force and moment equilibrium both close with correct dimensions."
+  },
+  "verification_checks": [
+    {"id": "check-equilibrium", "type": "equilibrium", "procedure": "Substitute reactions into force and moment balances.", "observed_result": "8 + 4 - 12 = 0 and 4(6) - 12(2) = 0.", "passed": true},
+    {"id": "check-dimensions", "type": "dimensional", "procedure": "Check that the force balance uses kN and moment balance uses kN m.", "observed_result": "Every term has the required force or moment dimension.", "passed": true}
+  ],
+  "branch_conditions": ["If the load location changes, recompute the moment equation before the force equation."],
+  "failure_boundaries": ["Additional supports or applied couples require additional unknowns or moment terms."],
+  "transfer_problem": {
+    "prompt": "For the same beam, replace the point load with a 4 kN/m uniform load over the full span and find both reactions.",
+    "changed_conditions": ["Point load is replaced by a full-span uniform load."],
+    "answer_hidden": true,
+    "target_node_ids": ["reaction-a", "reaction-b", "support-reactions-result"]
+  }
+}

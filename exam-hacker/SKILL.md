@@ -1,190 +1,91 @@
 ---
 name: exam-hacker
-description: Use when a user wants to cram for university final exams, turn messy course materials into an exam survival plan, triage target scores against remaining time and available references, reverse-engineer past papers, generate concept compression notes, build knowledge connection maps for STEM subjects, or create A4 cheat-sheet-style review artifacts for scoring under time pressure. Triggers include 期末速通, 复习资料, 考前突击, 生存大纲, 知识地图, 真题逆向, A4小抄, exam cram, finals, target score, and course review.
+description: Discover, select, and invoke one installed Exam Hacker specialist for an exam-cram request. Use when the user invokes exam-hacker, asks what to do next, wants one algorithmic STEM chain compressed, one problem solved, or a final-exam survival task. Do not perform specialist work inside the router.
 ---
 
-# Exam Hacker
+# Exam Hacker Router
 
-## Operating Stance
+## Purpose
 
-Act as an extremely pragmatic university final-exam survival engineer. The goal is not academic completeness; the goal is to trade the least time and energy for the user's target score.
-
-Default language follows the user. Be direct. If the user's target is unrealistic, say so and propose a lower-risk score target.
-
-Do not assume ideal materials. The worst valid case is only one textbook and several photos of a teacher's review-session PPT.
-
-## Phase 0: Material Isolation And Triage
-
-Before analyzing content, tell the user to put all course materials into one folder so the agent can read them consistently.
-
-Recommended structure:
+Select exactly one next operator in the Exam Hacker system:
 
 ```text
-course-root/
-  reference/     # raw materials: textbook, PPT, photos, homework, past papers, answers, senior notes
-  progress/      # generated markdown artifacts
+triage -> [compress | solve] -> drill -> replan -> drill
 ```
 
-Rules:
+`compress` and `solve` are optional preparation operators. They create artifacts but do not prove mastery or edit loop state.
 
-- `reference/` contains only raw evidence.
-- `progress/` contains only generated output.
-- Do not mix evidence and generated reasoning.
-- If the user has not organized files yet, still proceed with what exists, but record the material gaps.
+The router reduces choice. It does not analyze course content, generate study artifacts, grade answers, or edit loop state.
 
-Confirm or infer these inputs:
+## Installed Specialist Check
 
-1. Subject type: math/logic-heavy, memorization-heavy, or mixed.
-2. Target score: user-defined, such as 60+, 75+, 85+, 90+.
-3. Remaining time: days until exam and realistic study hours per day.
-4. Material quality: textbook, PPT, photos, homework, past papers, answer keys, senior notes, teacher hints.
+Before reading course state or choosing a route, locate this `SKILL.md` directory and run:
 
-Judge whether the target is realistic:
-
-- If only 2 days remain and the user wants 90+, flag the target as unreasonable and recommend pass/75+ survival mode.
-- If the target is 85+ but there are no past papers, answer keys, or teacher hints, warn that prediction confidence is low.
-- If materials are weak, generate a survival route instead of pretending to predict the exam precisely.
-
-Generate `progress/00_生存大纲.md` with:
-
-- material inventory and missing items
-- target-score feasibility
-- priority order for materials
-- must-win topics
-- strategic abandonment list
-- main knowledge-connection risks
-
-## Phase 1: Concept Compression
-
-Generate `[章节]_概念压缩.md`.
-
-For math/logic-heavy subjects, use parameter-style concept testing:
-
-- Zero/infinity test: what happens when a key parameter goes to 0 or infinity?
-- Reverse test: does the theorem still hold if cause and effect are reversed?
-- Extreme-boundary test: when does this formula absolutely not apply?
-
-For memorization-heavy subjects, use scoring-keyword compression:
-
-- Strip definitions down to 3-5 scoring keywords.
-- Remove decorative phrasing unless it is a likely scoring phrase.
-- Give crude memory hooks only when they make recall faster.
-- Ask the user to restate the keywords in their own words.
-
-## Phase 2: Paper Reverse Engineering
-
-When given a past paper, example problem, homework problem, or answer key, generate `[题型]_逆向拆解.md`.
-
-For math/logic-heavy questions:
-
-- Identify the one formula or setup that earns early process marks.
-- Map problem trigger words to the first operation.
-- Reverse from the answer to the original conditions.
-- Use "one problem, three eats": read answer logic, solve independently, then mutate variables or conditions.
-
-For memorization-heavy questions:
-
-- Infer scoring structure: keywords, framework, and expansion marks.
-- Provide semantic substitutes for forgotten terms.
-- Enforce answer layout: numbered points, scoring keyword in the first sentence, expansion after.
-
-## Phase 3: Knowledge Connection Map
-
-This is the core differentiator. AI is usually good at isolated knowledge summaries, but finals often test how concepts connect. For STEM and comprehensive questions, isolated knowledge lists are a failure.
-
-Generate:
-
-1. `04_知识节点表.md`
-2. `05_知识连接图.md`
-3. `06_综合题型地图.md`
-
-### `04_知识节点表.md`
-
-Each node must include:
-
-| 节点 | 类型 | 必会程度 | 常见题型 | 题目触发词 | 直接前置知识 | 直接后继知识 |
-|---|---|---|---|---|---|---|
-
-Node types: concept, formula, theorem, method, boundary condition, scoring routine.
-
-Mastery levels: must-know, high-frequency, abandonable.
-
-### `05_知识连接图.md`
-
-Each edge must include:
-
-| A | B | 连接方式 | 题目触发词 | 断链风险 | 丢分位置 |
-|---|---|---|---|---|---|
-
-Allowed connection types include:
-
-- causality
-- derivation
-- substitution
-- boundary constraint
-- formula chain
-- unit conversion
-- graph relation
-- approximation assumption
-
-The map must answer: "How does the exam force the student to move from A to B?"
-
-### `06_综合题型地图.md`
-
-For each integrated problem type, output:
-
-```markdown
-## 题型：[题型名称]
-
-### 表面问题
-[题目看起来在问什么]
-
-### 实际考察链条
-A -> B -> C -> D
-
-### 第一步反应
-[看到题目后第一步必须写什么]
-
-### 断链点
-- [断链点 1]
-- [断链点 2]
-
-### 捞分策略
-即使不会完整做，也必须写：
-- 原始公式
-- 题目条件翻译
-- 边界条件/已知条件
-- 单位和符号定义
+```powershell
+python scripts/list-specialists.py --strict
 ```
 
-If the output only lists concepts without edges, redo the phase.
+The script is the authority for the five downstream specialists currently installed for Codex. It checks `~/.codex/skills` and `~/.agents/skills`, validates each `SKILL.md` frontmatter name, and rejects duplicate installations that could create ambiguous routing.
 
-## Phase 4: A4 Compression
+- Route only to a specialist returned by the script.
+- If a specialist is missing, malformed, or installed in both roots, stop and report the exact missing or conflicting name and searched roots.
+- Do not fall back to legacy monolithic behavior and do not pretend an unavailable specialist was invoked.
+- Preserve the script result for this turn; do not repeatedly rescan after choosing.
 
-After each major chapter or full-paper pass, generate `[章节]_A4小抄.md`.
+## Specialist Roster
 
-This is not for cheating. It is a forced compression artifact.
+| Specialist | Use when | Owns |
+|---|---|---|
+| `$exam-hacker-triage` | No usable `progress/strategy.json` exists, or the user asks what to study, defer, or abandon | Initial strategy, source inventory, mastery snapshot, first 1–3 Sessions |
+| `$exam-hacker-compress` | The user wants one algorithmic STEM knowledge chain compressed, or explicitly reports failure at one named node | One validated chain or explicit-node compression artifact |
+| `$exam-hacker-solve` | The user wants the complete worked answer or reverse engineering of one algorithmic STEM problem | One validated, practice-only solved-problem chain |
+| `$exam-hacker-drill` | A strategy exists and the user wants to start the next Session, practice, verify mastery, or submit answers | One answer-hidden Session and append-only mastery evidence |
+| `$exam-hacker-replan` | New performance evidence exists, a Session finished, availability changed, or the user asks what should change | A new strategy revision and the next 1–3 Sessions |
 
-For math/logic-heavy subjects:
+## Routing Order
 
-- front-loaded formulas
-- first-step triggers
-- boundary conditions
-- calculation traps
-- process-mark fallback lines
+Respect an explicitly named specialist. Otherwise apply the first matching rule:
 
-For memorization-heavy subjects:
+1. If the user submits raw answers to an active Session or asks for those answers to be graded and recorded, select `$exam-hacker-drill`. Raw work is not evidence until drill grades it.
+2. If a new evidence event already exists after the strategy cursor, or the user reports an already-graded result, completed Session, or changed availability, select `$exam-hacker-replan`.
+3. If the user asks for the complete answer, worked solution, or reverse engineering of one eligible algorithmic STEM problem, select `$exam-hacker-solve`. If it is an unanswered drill task, carry forward that the result must be `practice_only`.
+4. If the user asks to compress an eligible algorithmic STEM knowledge chain, select `$exam-hacker-compress`. Carry an explicit named-node failure as node mode; otherwise carry chain mode.
+5. If the user asks to start, practice, be tested, verify mastery, or continue the next Session and a strategy exists, select `$exam-hacker-drill`.
+6. If no usable strategy exists, or the user asks for initial priorities, target feasibility, or strategic abandonment, select `$exam-hacker-triage`.
+7. If the request asks for whole-course A4 sheets, generic knowledge maps, broad question banks, or non-algorithmic compression without one of the transitions above, state that it is outside the current collection. Do not smuggle the legacy monolith back into the router.
 
-- scoring keywords
-- answer skeletons
-- semantic substitutes
-- short recall hooks
-- "write this if blanking out" fallback phrases
+When filesystem access is available, inspect only the expected state files needed for routing:
 
-## Red Lines
+- `progress/strategy.json`;
+- `progress/mastery-evidence.jsonl`.
 
-- No long academic lectures.
-- Do not ask users to memorize full textbook sentences when scoring keywords are enough.
-- Encourage strategic abandonment when a low-frequency point costs too much time.
-- For STEM or integrated problems, never stop at a knowledge list. Output the connections.
-- If the user target is unreasonable, challenge it before generating a plan.
+Do not scan course content merely to choose a specialist.
+
+## Handoff
+
+State the selected specialist in one line and preserve already-known inputs:
+
+```text
+Selected: $exam-hacker-triage
+Reason: no usable strategy exists.
+Carry forward: exam date, target score, availability, material location.
+```
+
+If the selected specialist passed the installed check, apply that specialist in the same turn. Read its `SKILL.md` and required references, then continue with the preserved handoff. If the runtime still cannot load the verified path, stop with the exact invocation, verified path, and compact handoff. Do not make the user repeat facts already present in the request or state files.
+
+## State Ownership
+
+- Router: reads state only.
+- Triage: creates `strategy.json` revision 1 and may initialize the evidence log.
+- Compress: creates one compression artifact; it never edits strategy or evidence.
+- Solve: creates one solved-problem artifact marked `practice_only`; it never edits strategy or evidence.
+- Drill: never edits `strategy.json`; it may append mastery evidence only after observing user performance.
+- Replan: creates later strategy revisions and advances the evidence cursor.
+
+## Stop Conditions
+
+- Route to one specialist only.
+- Never select a specialist before the installed check passes.
+- Do not generate a generic study plan as a fallback.
+- Do not invoke triage merely because the user says “期末”; use the actual state transition.
+- If state files are malformed, route to the specialist that owns repair: triage for missing or unusable initial strategy, replan for a valid prior strategy with inconsistent later evidence.

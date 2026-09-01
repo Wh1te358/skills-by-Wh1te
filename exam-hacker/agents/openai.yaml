@@ -1,7 +1,7 @@
 interface:
-  display_name: "Exam Hacker"
-  short_description: "Final exam triage and knowledge maps"
-  default_prompt: "Use $exam-hacker to turn my course materials into a target-score exam survival plan."
+  display_name: "exam-hacker"
+  short_description: "Route one exam request to one focused specialist."
+  default_prompt: "Use $exam-hacker to select and run the next focused Exam Hacker specialist."
 
 policy:
   allow_implicit_invocation: true

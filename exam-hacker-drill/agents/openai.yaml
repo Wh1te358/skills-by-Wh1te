@@ -1,0 +1,7 @@
+interface:
+  display_name: "exam-hacker-drill"
+  short_description: "Execute one Session and append mastery evidence."
+  default_prompt: "Use $exam-hacker-drill to run my next Session without showing answers first."
+
+policy:
+  allow_implicit_invocation: true

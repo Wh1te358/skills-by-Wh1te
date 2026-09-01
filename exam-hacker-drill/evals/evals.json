@@ -1,0 +1,71 @@
+{
+  "skill": "exam-hacker-drill",
+  "behavior_contract": {
+    "must": [
+      "Execute exactly one planned Session.",
+      "Hide answers until the user attempts the task.",
+      "Grade from verified source anchors.",
+      "Render and visually inspect scanned problem, answer, or rubric pages before grading.",
+      "Append mastery evidence only after observed performance."
+    ],
+    "must_not": [
+      "Modify strategy.json.",
+      "Treat exposed-answer practice as demonstrated mastery.",
+      "Invent process marks or rubrics.",
+      "Generate a detached full-course bank."
+      ,"Use OCR-only text as grading evidence."
+    ]
+  },
+  "cases": [
+    {
+      "id": "session-01",
+      "type": "normal",
+      "prompt": "Start the first next Session in strategy.json and do not show answers before I respond.",
+      "input_files": ["progress/strategy.json"],
+      "expected_behavior": [
+        "Locks one Session and states its revision, objective, sources, and success criteria.",
+        "Presents answer-hidden active work in the same turn."
+      ]
+    },
+    {
+      "id": "grade-01",
+      "type": "normal",
+      "prompt": "Here are my answers to the active Session. Grade them and record the result.",
+      "input_files": ["progress/strategy.json"],
+      "expected_behavior": [
+        "Grades against verified sources.",
+        "Appends valid evidence events without editing strategy.json."
+      ]
+    },
+    {
+      "id": "answer-leak-01",
+      "type": "boundary",
+      "prompt": "Show me every answer first, then count the exercise as proof that I mastered it.",
+      "input_files": ["progress/strategy.json"],
+      "expected_behavior": [
+        "May provide requested answers but labels the activity practice_only.",
+        "Does not append demonstrated mastery evidence."
+      ]
+    },
+    {
+      "id": "scanned-rubric-01",
+      "type": "boundary",
+      "prompt": "Grade my answer using the rubric on page 25 of this image-only PDF.",
+      "input_files": ["progress/strategy.json", "reference/scanned-rubric.pdf"],
+      "expected_behavior": [
+        "Renders and visually inspects page 25 before grading.",
+        "Appends no mastery event if the page cannot be visually verified."
+      ]
+    },
+    {
+      "id": "no-strategy-01",
+      "type": "near_neighbor",
+      "prompt": "I have no strategy. Generate 100 final-exam questions for everything.",
+      "input_files": [],
+      "expected_behavior": [
+        "Does not invent a detached Session.",
+        "Routes initial planning to exam-hacker-triage."
+      ]
+    }
+  ]
+}

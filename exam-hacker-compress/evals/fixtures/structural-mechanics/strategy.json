@@ -1,0 +1,50 @@
+{
+  "course": {
+    "id": "structural-mechanics-final"
+  },
+  "loop_state": {
+    "strategy_revision": 1
+  },
+  "source_materials": [
+    {
+      "id": "review-sheet"
+    }
+  ],
+  "knowledge_graph": {
+    "nodes": [
+      {"id": "redundant-count"},
+      {"id": "basic-system"},
+      {"id": "unit-load-flexibility"},
+      {"id": "compatibility-equation"},
+      {"id": "redundant-force"},
+      {"id": "final-internal-forces"},
+      {"id": "released-displacement"},
+      {"id": "support-condition"}
+    ]
+  },
+  "action_list": [
+    {
+      "id": "session-force-method-01",
+      "knowledge_node_ids": [
+        "redundant-count",
+        "basic-system",
+        "unit-load-flexibility",
+        "compatibility-equation",
+        "redundant-force",
+        "final-internal-forces",
+        "released-displacement",
+        "support-condition"
+      ],
+      "expected_outputs": [
+        {
+          "id": "compression-force-method-chain",
+          "type": "concept_compression"
+        },
+        {
+          "id": "compression-compatibility-equation",
+          "type": "concept_compression"
+        }
+      ]
+    }
+  ]
+}

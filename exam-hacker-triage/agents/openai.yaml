@@ -1,0 +1,7 @@
+interface:
+  display_name: "exam-hacker-triage"
+  short_description: "Build evidence-backed priorities and first Sessions."
+  default_prompt: "Use $exam-hacker-triage to create my initial exam strategy and first Sessions."
+
+policy:
+  allow_implicit_invocation: true

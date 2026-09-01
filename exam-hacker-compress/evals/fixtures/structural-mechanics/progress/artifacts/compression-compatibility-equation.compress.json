@@ -1,0 +1,83 @@
+{
+  "contract_version": "exam-hacker-compress/v1",
+  "artifact_type": "knowledge-chain-compression",
+  "artifact_id": "compression-compatibility-equation",
+  "course_id": "structural-mechanics-final",
+  "strategy_revision_observed": 1,
+  "session_id": "session-force-method-01",
+  "output_id": "compression-compatibility-equation",
+  "display_path": "progress/artifacts/compression-compatibility-equation.md",
+  "scope": {
+    "mode": "node",
+    "explicit_node_problem": true,
+    "target_node_ids": ["compatibility-equation"]
+  },
+  "source_refs": [
+    {"material_id": "review-sheet", "locator": "paragraph 2", "claim": "The source gives the zero-displacement compatibility equation."}
+  ],
+  "nodes": [
+    {
+      "id": "released-displacement",
+      "label": "释放方向总位移项",
+      "role": "given",
+      "minimum_recall": "Delta_1P 与 delta_11 X_1 必须在同一释放方向。",
+      "source_refs": [{"material_id": "review-sheet", "locator": "paragraphs 1-2", "claim": "Both displacement terms refer to the released direction."}]
+    },
+    {
+      "id": "support-condition",
+      "label": "原支座位移条件",
+      "role": "given",
+      "minimum_recall": "无沉降时该方向规定总位移为零。",
+      "source_refs": [{"material_id": "review-sheet", "locator": "paragraph 2", "claim": "The released support displacement is zero in the stated case."}]
+    },
+    {
+      "id": "compatibility-equation",
+      "label": "变形协调方程",
+      "role": "constraint",
+      "minimum_recall": "Delta_1P + delta_11 X_1 = 0。",
+      "source_refs": [{"material_id": "review-sheet", "locator": "paragraph 2", "claim": "The compatibility equation is stated explicitly."}]
+    }
+  ],
+  "initial_node_ids": ["released-displacement", "support-condition"],
+  "steps": [
+    {
+      "id": "step-assemble-compatibility",
+      "input_node_ids": ["released-displacement", "support-condition"],
+      "output_node_ids": ["compatibility-equation"],
+      "trigger": "已知释放方向的荷载位移和单位未知力柔度，且原支座不沉降。",
+      "operation": "把同方向位移相加并令总位移等于零。",
+      "why": "恢复原约束后必须满足原结构的几何条件。",
+      "check": "各项方向、符号和位移量纲一致。",
+      "source_refs": [{"material_id": "review-sheet", "locator": "paragraph 2", "claim": "Assemble Delta_1P + delta_11 X_1 = 0."}]
+    }
+  ],
+  "endpoint": {
+    "node_id": "compatibility-equation",
+    "statement": "写出与释放方向、符号约定和原支座位移条件一致的协调方程。",
+    "verification_method": "检查每项均为同方向位移，并将无沉降条件代入右端为零。"
+  },
+  "applicability": {
+    "conditions": ["原释放方向位移规定值为零。", "Delta_1P 与 delta_11 使用同一方向约定。"],
+    "failure_boundaries": ["存在支座沉降时，右端应改为规定位移而不是零。"]
+  },
+  "compression_losses": [
+    {
+      "omitted": "位移积分的具体求值过程。",
+      "restore_when": "用户无法得到 Delta_1P 或 delta_11，而不只是不会组装方程时。"
+    }
+  ],
+  "retrieval_probes": [
+    {
+      "id": "probe-equation-trigger",
+      "prompt": "给出 Delta_1P、delta_11 和零支座位移，闭卷写出协调方程。",
+      "answer_hidden": true,
+      "target_node_ids": ["compatibility-equation"]
+    },
+    {
+      "id": "probe-settlement-branch",
+      "prompt": "若支座沿释放方向沉降 Delta，说明协调方程哪一处改变。",
+      "answer_hidden": true,
+      "target_node_ids": ["compatibility-equation"]
+    }
+  ]
+}

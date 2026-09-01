@@ -1,0 +1,7 @@
+interface:
+  display_name: "exam-hacker-replan"
+  short_description: "Revise exam strategy from new performance evidence."
+  default_prompt: "Use $exam-hacker-replan to consume my new evidence and choose the next Sessions."
+
+policy:
+  allow_implicit_invocation: true

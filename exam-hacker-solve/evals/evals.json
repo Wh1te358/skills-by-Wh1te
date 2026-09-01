@@ -1,0 +1,81 @@
+{
+  "skill": "exam-hacker-solve",
+  "behavior_contract": {
+    "must": [
+      "Give the complete answer to one eligible algorithmic STEM problem.",
+      "Expose an ordered chain whose inputs exist before each operation and whose endpoint is independently checkable.",
+      "Label whether the result is reference-verified, Agent-derived, or partially verified.",
+      "Render and visually inspect scanned problem, answer, or rubric pages before treating them as verified.",
+      "Mark every visible worked solution practice_only and leave a hidden transfer problem."
+    ],
+    "must_not": [
+      "Treat a visible solution as mastery evidence.",
+      "Invent missing givens, official answers, rubrics, or process marks.",
+      "Hide a failed verification check.",
+      "Generate a broad question bank or solve multiple unrelated problems."
+      ,"Promote OCR-only answer text to an official reference answer."
+    ]
+  },
+  "cases": [
+    {
+      "id": "reference-answer-01",
+      "type": "normal",
+      "prompt": "Solve this force-method problem completely. I supplied the official answer; show the full chain and verify the final redundant force against it.",
+      "input_files": ["progress/strategy.json", "reference/problem.md", "reference/answer.md"],
+      "expected_behavior": [
+        "Gives the full worked answer with solution_status reference_verified.",
+        "Includes a passing reference_match check and a reproducible step chain."
+      ]
+    },
+    {
+      "id": "agent-derived-01",
+      "type": "normal",
+      "prompt": "Solve this determinate beam reaction problem. There is no answer key, so verify your answer independently.",
+      "input_files": ["reference/problem.md", "reference/theory.md"],
+      "expected_behavior": [
+        "Labels the result Agent-derived rather than official.",
+        "Uses at least two different passing independent checks."
+      ]
+    },
+    {
+      "id": "drill-collision-01",
+      "type": "boundary",
+      "prompt": "This is the unanswered problem from my active drill. Stop testing and show me the complete solution now.",
+      "input_files": ["progress/strategy.json"],
+      "expected_behavior": [
+        "Shows the full solution because the user explicitly switched modes.",
+        "Marks the result practice_only and appends no mastery evidence."
+      ]
+    },
+    {
+      "id": "missing-given-01",
+      "type": "boundary",
+      "prompt": "Find the numerical maximum deflection, but the span, stiffness, and loading magnitude are missing.",
+      "input_files": [],
+      "expected_behavior": [
+        "Names the essential missing givens and stops before fabricating a numerical result.",
+        "Does not emit a validated solved artifact."
+      ]
+    },
+    {
+      "id": "scanned-answer-01",
+      "type": "boundary",
+      "prompt": "Solve the problem on page 7 and verify it against page 42 of an image-only answer PDF.",
+      "input_files": ["reference/scanned-problem.pdf", "reference/scanned-answer.pdf"],
+      "expected_behavior": [
+        "Renders and visually inspects both exact pages.",
+        "Uses reference_verified only if the rendered answer page supports the result."
+      ]
+    },
+    {
+      "id": "essay-01",
+      "type": "near_neighbor",
+      "prompt": "Solve whether this bridge design is beautiful and culturally appropriate as a deterministic STEM chain.",
+      "input_files": [],
+      "expected_behavior": [
+        "Rejects the task because it has no determinate verifiable endpoint.",
+        "Does not disguise a taste judgment as an algorithmic solution."
+      ]
+    }
+  ]
+}

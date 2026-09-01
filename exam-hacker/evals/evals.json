@@ -1,0 +1,90 @@
+{
+  "skill": "exam-hacker",
+  "behavior_contract": {
+    "must": [
+      "Verify the five downstream specialists against installed Codex skill roots before selecting one.",
+      "Select exactly one specialist from triage, compress, solve, drill, or replan.",
+      "Use existing state before asking the user to repeat information.",
+      "Preserve a compact handoff when the specialist cannot run in the same turn."
+    ],
+    "must_not": [
+      "Write or modify strategy or mastery evidence files.",
+      "Perform a specialist workflow inside the router.",
+      "Route a request to multiple specialists at once.",
+      "Claim to invoke a missing, malformed, or ambiguously installed specialist."
+    ]
+  },
+  "cases": [
+    {
+      "id": "initial-01",
+      "type": "normal",
+      "prompt": "I have three days before my final and no strategy yet. Tell me what to study and what to drop.",
+      "input_files": [],
+      "expected_behavior": [
+        "Selects exam-hacker-triage only.",
+        "Carries forward the three-day constraint and planning request."
+      ]
+    },
+    {
+      "id": "grade-submission-01",
+      "type": "normal",
+      "prompt": "Here are my raw answers to the active force-method Session. Grade them and record the result.",
+      "input_files": ["progress/strategy.json"],
+      "expected_behavior": [
+        "Selects exam-hacker-drill only.",
+        "Does not treat ungraded answers as an existing mastery event."
+      ]
+    },
+    {
+      "id": "replan-01",
+      "type": "normal",
+      "prompt": "The force-method Session was graded 3/10 and its mastery event is already in mastery-evidence.jsonl. Recalculate what I should do next.",
+      "input_files": ["progress/strategy.json", "progress/mastery-evidence.jsonl"],
+      "expected_behavior": [
+        "Selects exam-hacker-replan only.",
+        "Preserves the reported score in the handoff."
+      ]
+    },
+    {
+      "id": "compress-chain-01",
+      "type": "normal",
+      "prompt": "Compress the force-method knowledge chain into something I can execute from choosing the basic system to checking the final result.",
+      "input_files": ["progress/strategy.json"],
+      "expected_behavior": [
+        "Selects exam-hacker-compress only.",
+        "Carries chain mode because the user did not identify one failed node."
+      ]
+    },
+    {
+      "id": "solve-01",
+      "type": "normal",
+      "prompt": "Give me the complete worked solution to this force-method problem and explain the reproducible chain.",
+      "input_files": ["reference/problem.md"],
+      "expected_behavior": [
+        "Selects exam-hacker-solve only.",
+        "Carries the request for a full practice-only solution."
+      ]
+    },
+    {
+      "id": "neighbor-01",
+      "type": "near_neighbor",
+      "prompt": "Generate a complete A4 formula sheet for every chapter.",
+      "input_files": [],
+      "expected_behavior": [
+        "States that the request is outside the current minimum loop.",
+        "Does not rebuild the removed monolithic workflow inside the router."
+      ]
+    },
+    {
+      "id": "installation-incomplete-01",
+      "type": "failure_mode",
+      "prompt": "I know nothing about this final. Use exam-hacker and tell me where to begin.",
+      "input_files": [],
+      "environment": "exam-hacker-triage is absent from all installed skill roots",
+      "expected_behavior": [
+        "Stops before routing and names exam-hacker-triage as missing.",
+        "Does not execute legacy triage logic inside the router."
+      ]
+    }
+  ]
+}

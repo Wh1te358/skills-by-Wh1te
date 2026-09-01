@@ -1,0 +1,7 @@
+interface:
+  display_name: "exam-hacker-compress"
+  short_description: "Compile one STEM knowledge chain into a usable artifact."
+  default_prompt: "Use $exam-hacker-compress to compress one algorithmic STEM knowledge chain into a reproducible path with a verifiable endpoint."
+
+policy:
+  allow_implicit_invocation: true

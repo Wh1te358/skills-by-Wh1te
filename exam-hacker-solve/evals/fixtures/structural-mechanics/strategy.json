@@ -1,0 +1,29 @@
+{
+  "course": {
+    "id": "structural-mechanics-final"
+  },
+  "loop_state": {
+    "strategy_revision": 1
+  },
+  "source_materials": [
+    {"id": "problem-sheet"},
+    {"id": "equilibrium-note"},
+    {"id": "answer-key"}
+  ],
+  "knowledge_graph": {
+    "nodes": [
+      {"id": "beam-equilibrium"},
+      {"id": "support-reactions"}
+    ]
+  },
+  "action_list": [
+    {
+      "id": "session-beam-reactions-01",
+      "knowledge_node_ids": ["beam-equilibrium", "support-reactions"],
+      "expected_outputs": [
+        {"id": "solution-beam-reactions-reference", "type": "solution_chain"},
+        {"id": "solution-beam-reactions-derived", "type": "solution_chain"}
+      ]
+    }
+  ]
+}

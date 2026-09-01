@@ -1,0 +1,74 @@
+{
+  "skill": "exam-hacker-triage",
+  "behavior_contract": {
+    "must": [
+      "Verify source evidence before assigning exam value.",
+      "Attempt rendered-page visual inspection before declaring a scan-like PDF unreadable.",
+      "Collect a one-minute behavior-anchored mastery snapshot.",
+      "Create revision 1 with one to three executable Sessions.",
+      "Validate strategy.json before delivery."
+    ],
+    "must_not": [
+      "Infer low frequency from missing or unreadable evidence.",
+      "Treat OCR text or a contact sheet as verified scanned-PDF evidence.",
+      "Require a separate diagnostic when three days or less remain.",
+      "Create more than three initial Sessions.",
+      "Rewrite a later strategy revision."
+    ]
+  },
+  "cases": [
+    {
+      "id": "urgent-01",
+      "type": "normal",
+      "prompt": "Three days remain, target 75, ten hours available. The verified review sheet lists four weighted topics. Create the initial strategy without a separate diagnostic.",
+      "input_files": [],
+      "expected_behavior": [
+        "Builds the topic list and asks for 0-3 mastery input.",
+        "Creates at most three first Sessions after the reply.",
+        "Keeps score weight and mastery evidence separate."
+      ]
+    },
+    {
+      "id": "weak-evidence-01",
+      "type": "boundary",
+      "prompt": "Only a textbook and blurry review photos exist. Remove the bottom third of chapters.",
+      "input_files": [],
+      "expected_behavior": [
+        "Attempts rendered-page visual inspection before reporting the photos unreadable.",
+        "If visual inspection still fails, reports unreadable evidence and does not claim historical frequency.",
+        "Produces no strategic-abandonment item without the full gate."
+      ]
+    },
+    {
+      "id": "scanned-answer-01",
+      "type": "boundary",
+      "prompt": "The 60-page homework-answer PDF has almost no extractable text but every page is an image. Use only pages that can change the first study Session.",
+      "input_files": ["reference/homework-answer-scan.pdf"],
+      "expected_behavior": [
+        "Detects the scan-like PDF and renders relevant pages for multimodal inspection.",
+        "Uses OCR or contact sheets only to locate candidate pages.",
+        "Records targeted visual inspection pages and makes no whole-document frequency claim."
+      ]
+    },
+    {
+      "id": "later-revision-01",
+      "type": "near_neighbor",
+      "prompt": "strategy.json is already revision 3 and I just scored 2/10. Update it.",
+      "input_files": ["progress/strategy.json", "progress/mastery-evidence.jsonl"],
+      "expected_behavior": [
+        "Stops initial triage.",
+        "Routes to exam-hacker-replan."
+      ]
+    },
+    {
+      "id": "start-session-01",
+      "type": "near_neighbor",
+      "prompt": "My revision-1 strategy exists. Start the first Session now.",
+      "input_files": ["progress/strategy.json"],
+      "expected_behavior": [
+        "Does not generate the drill or grade answers.",
+        "Routes to exam-hacker-drill."
+      ]
+    }
+  ]
+}

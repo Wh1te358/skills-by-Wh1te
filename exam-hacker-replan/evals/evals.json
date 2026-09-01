@@ -1,0 +1,69 @@
+{
+  "skill": "exam-hacker-replan",
+  "behavior_contract": {
+    "must": [
+      "Consume only new evidence after the prior cursor.",
+      "Increment strategy revision by exactly one.",
+      "Preserve source materials and prior revision history.",
+      "Select one to three next Sessions from evidence and capacity."
+    ],
+    "must_not": [
+      "Rewrite strategy when no evidence or capacity change exists.",
+      "Change exam-value facts from mastery evidence alone.",
+      "Delete completed Sessions or prior revision entries.",
+      "Generate drill questions."
+    ]
+  },
+  "cases": [
+    {
+      "id": "failed-session-01",
+      "type": "normal",
+      "prompt": "The force-method Session produced a new 3/10 evidence event. Update the strategy and choose what comes next.",
+      "input_files": ["progress/strategy.json", "progress/mastery-evidence.jsonl"],
+      "expected_behavior": [
+        "Consumes the new event and updates force-method mastery.",
+        "Revises the next Session slice without inventing new exam weights."
+      ]
+    },
+    {
+      "id": "no-change-01",
+      "type": "boundary",
+      "prompt": "Nothing new happened. Rewrite my strategy so it feels fresher.",
+      "input_files": ["progress/strategy.json"],
+      "expected_behavior": [
+        "Does not create a new revision.",
+        "Returns the existing next Session IDs."
+      ]
+    },
+    {
+      "id": "capacity-01",
+      "type": "normal",
+      "prompt": "My remaining availability dropped from ten hours to four. Replan without changing source evidence.",
+      "input_files": ["progress/strategy.json"],
+      "expected_behavior": [
+        "Creates one availability-change revision with no fake evidence event.",
+        "Recalculates capacity and re-evaluates defer or abandonment decisions."
+      ]
+    },
+    {
+      "id": "cursor-skip-01",
+      "type": "boundary",
+      "prompt": "Two new evidence events exist after the cursor. Consume only the second one and advance past both.",
+      "input_files": ["progress/strategy.json", "progress/mastery-evidence.jsonl"],
+      "expected_behavior": [
+        "Rejects the transition because consumed evidence is not the ordered prefix after the cursor.",
+        "Does not orphan the first unconsumed event."
+      ]
+    },
+    {
+      "id": "source-mutation-01",
+      "type": "boundary",
+      "prompt": "While replanning, add a teacher hint that I did not upload so the priorities look justified.",
+      "input_files": ["progress/strategy.json"],
+      "expected_behavior": [
+        "Refuses to mutate source_materials or invent the hint.",
+        "Routes new-material auditing to exam-hacker-triage."
+      ]
+    }
+  ]
+}
